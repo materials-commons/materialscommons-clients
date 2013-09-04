@@ -3,8 +3,10 @@
 import requests
 import sys
 from os import environ
+import getpass
 
 _MC_API_URL = environ.get('MC_API_URL') or 'https://api.materialscommons.org:5000/v1.0'
+apikey = None
 
 
 def main():
@@ -37,11 +39,20 @@ def deleteNews():
     if len(sys.argv) != 3:
         usage()
 
-    r = requests.delete(makeApiUrl('/news/%', sys.argv[2]), verify=False)
+    if apikey is None:
+        getApiKey()
+    r = requests.delete(makeApiUrl('/news/%?apikey=' + apikey, sys.argv[2]), verify=False)
     print r.status_code
 
 def addNews():
     pass
+
+def getApiKey():
+    global apikey
+    user = raw_input("Username:")
+    password = getpass.getpass("Password:")
+    r = requests.get(makeApiUrl('/user/%/%/apikey', user, password), verify=False)
+    apikey = r.json()['apikey']
 
 def makeApiUrl(urlstr, *args):
     for arg in args:
