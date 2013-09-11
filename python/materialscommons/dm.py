@@ -14,27 +14,17 @@ class User(object):
                 },   
                 "createdOn" : {"type" : "date-time"},
                 "lastModified" : {"type" : "date-time"},
-                "email" : {"type" : "email"},
-                "fullname" : {"type" : "string"},
+                "name" : {
+                    "description" : "username, as in jdoe",
+                    "type" : "string"
+                },
                 "passwordHash" : {
                     "description" : "Hash of users password",
                     "type" : "string"
-                }, 
-                "homepage" : {
-                    "description" : "Webpage for user",
-                    "type" : "uri"
                 },
-                "avatar" : {
-                    "description" : "http or file reference for picture",
-                    "type" : "uri"
-                }, 
-                "description" : {
-                    "description" : "User description/bio",
-                    "type" : "string"
-                },
-                "affiliation" : {
-                    "description" : "Users affiliation, eg University of Michigan",
-                    "type" : "string"
+                "contact" : {
+                    "description" : "Embedded Contact object",
+                    "type" : "object"
                 },
                 "notes" : {
                     "description" : "List of Notes objects",
@@ -172,11 +162,11 @@ class Machine(object):
             "type" : "object",
             "properties" : {
                 "id" : {"type" : "string"},
-                "shortname" : {
+                "name" : {
                     "description" : "machine name, eg 'flux'",
                     "type" : "hostname"
                 },
-                "longname": {
+                "fullname": {
                     "description" : "machine long name, eg flux-log.engin.umich.edu",
                     "type": "hostname"
                 },
@@ -203,9 +193,22 @@ class Contact(object):
             "description" : "Embedded object, not a database table",
             "type" : "object",
             "properties" : {
+                "fullname" : {"type" : "string"},
                 "email" : {"type" : "email"},
                 "phone" : {"type" : "string"},
                 "website" : {"type" : "uri"},
+                "avatar" : {
+                    "description" : "http or file reference for picture",
+                    "type" : "uri"
+                }, 
+                "description" : {
+                    "description" : "Contact description/bio",
+                    "type" : "string"
+                },
+                "affiliation" : {
+                    "description" : "Contact affiliation, eg University of Michigan",
+                    "type" : "string"
+                },
                 "notes" : {
                     "description" : "List of Notes objects",
                     "type" : "array",
