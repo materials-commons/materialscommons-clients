@@ -274,6 +274,7 @@ class Process(object):
                 },
                 "version" : {"type" : "string"},
                 "parent" : {
+                # What is this?
                     "description:" : "Parent process id this process was based on",
                     "type" : "string"
                 },
@@ -283,36 +284,46 @@ class Process(object):
                     "minimum" : 0,
                     "items": {"type" : "object"}
                 },
-                "inputData" : {
-                    "description" : "List of DataFile ids",
+                "inputDataFiles" : {
+                    "description" : "List of input DataFile ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "outputData" : {
-                    "description" : "List of DataFile ids",
+                "outputDataFiles" : {
+                    "description" : "List of output DataFile ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "params" : {
-                    "description" : "List of parameters"
+                "inputDataParams" : {
+                    "description" : "List of input DataParam ids"
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "errorMessages" : {
-                    # How to relate a series of messages with a started run?
-                    "description" : "List of error messages",
+                "outputDataParams" : {
+                    "description" : "List of output DataParam ids"
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "startStopTimes" : {
-                    "description" : "List of StartStop objects",
+                "runs" : {
+                    "description" : "List of runs within this Process",
                     "type" : "array",
                     "minimum" : 0,
-                    "items" : {"type" : "object"}
+                    "items" : {
+                        "type" : "object",
+                        "properties" : {
+                            "startTime" : {"type" : "date-time"},
+                            "stopTime" : {"type" : "date-time"},
+                            "errorMessages" : {
+                                "description" : "List of error messages",
+                                "type" : "array",
+                                "minimum" : 0,
+                                "items" : {"type" : "string"}
+                            },
+                        },
                 },
                 "citations" : {
                     # What to do with this - separate into an object?
@@ -326,22 +337,8 @@ class Process(object):
         }
         return _schema
 
-class StartStop(object):
-    def __init__(self):
-        pass
 
-    def schema():
-        _schema = {
-            "description" : "",
-            "type" : "object",
-            "properties" : {
-                "started" : {"type" : "date-time"},
-                "stopped" : {"type" : "date-time"}
-            }
-        }
-        return _schema
-
-class DataParams(object):
+class DataParam(object):
     def __init__(self):
         pass
 
@@ -437,7 +434,7 @@ class Review(object):
                 "type" {
                     "description" : "The type of review requested.",
                     # Are there other types?
-                    "enum" : ["datafile", "datadir", "project"]
+                    "enum" : ["dataparam", "datafile", "datadir", "project"]
                 },
                 "itemName" : {
                     "description" : "Name of item the review is for",
@@ -558,20 +555,14 @@ class DataSet(object):
                     "minimum" : 0,
                     "items": {"type" : "object"}
                 },
-                "inputData" : {
+                "dataFiles" : {
                     "description" : "List of DataFile ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "outputData" : {
-                    "description" : "List of DataFile ids",
-                    "type" : "array",
-                    "minimum" : 0,
-                    "items" : {"type" : "string"}
-                },
-                "params" : {
-                    "description" : "List of parameters"
+                "dataParams" : {
+                    "description" : "List of DataParam ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
