@@ -243,6 +243,31 @@ class UserGroup(object):
         }
         return _schema
 
+class DataItem(object):
+    def __init__(self):
+        pass
+
+    def schema():
+        _schema = {
+            "description" : "",
+            "type" : "object",
+            "properties" : {
+                "files" : {
+                    "description" : "A list of DataFile ids",
+                    "type" : "array",
+                    "minimum": 0,
+                    "items" : {"type" : "string"}
+                },
+                "params" : {
+                    "description" : "A list of DataParam ids",
+                    "type" : "array",
+                    "minimum": 0,
+                    "items" : {"type" : "string"}
+                }
+            }
+        }
+        return _schema
+
 class Process(object):
     def __init__(self):
         pass
@@ -280,24 +305,32 @@ class Process(object):
                     "minimum" : 0,
                     "items": {"type" : "object"}
                 },
-                "inputData" : {
-                    "description" : "List of DataFile ids",
-                    "type" : "array",
-                    "minimum" : 0,
-                    "items" : {"type" : "string"}
+                "inputs" : {
+                    "description" : "DataItem for input params and files",
+                    "type" : "object"
                 },
-                "outputData" : {
-                    "description" : "List of DataFile ids",
-                    "type" : "array",
-                    "minimum" : 0,
-                    "items" : {"type" : "string"}
+                "outputs" : {
+                    "description" : "DataItem for output params and files",
+                    "type" : "object"
                 },
-                "params" : {
-                    "description" : "List of parameters"
-                    "type" : "array",
-                    "minimum" : 0,
-                    "items" : {"type" : "string"}
-                },
+                # "inputData" : {
+                #     "description" : "List of DataFile ids",
+                #     "type" : "array",
+                #     "minimum" : 0,
+                #     "items" : {"type" : "string"}
+                # },
+                # "outputData" : {
+                #     "description" : "List of DataFile ids",
+                #     "type" : "array",
+                #     "minimum" : 0,
+                #     "items" : {"type" : "string"}
+                # },
+                # "params" : {
+                #     "description" : "List of parameters"
+                #     "type" : "array",
+                #     "minimum" : 0,
+                #     "items" : {"type" : "string"}
+                # },
                 "errorMessages" : {
                     # How to relate a series of messages with a started run?
                     "description" : "List of error messages",
