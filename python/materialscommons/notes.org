@@ -1,0 +1,10 @@
+* Data Model Discussion [2013-09-12 Thu]
+*** TODO ParamType for DataParmas has Review
+*** TODO ITems with permissions: DataDirs, DataFile, DataParams, Reviews, Tags, Notes, DataSets, Projects, Process
+*** TODO Params go in data dirs
+*** TODO Citations has tags
+*** TODO Add params for directory (key value in datadir)
+*** TODO Citations object just text,
+*** TODO Add citations to Project, Process, DataItem, DataDir
+*** TODO Add type field to notes
+*** TODO Add multiple key/value pairs to notes

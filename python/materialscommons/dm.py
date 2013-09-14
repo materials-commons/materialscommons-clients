@@ -158,6 +158,7 @@ class UserTag(object):
                     "minimum" : 0,
                     "items": {"type" : "object"}
                 },
+                # Needs a list of items that it is tagged to and moved out of DataDir, and DataFile
             }
         }
         return _schema
@@ -270,29 +271,38 @@ class Process(object):
                     "type" : "string"
                 },
                 "version" : {"type" : "string"},
-                "parent" : {
-                    "description:" : "Parent process id this process was based on",
-                    "type" : "string"
-                },
                 "notes" : {
                     "description" : "List of Notes objects",
                     "type" : "array",
                     "minimum" : 0,
                     "items": {"type" : "object"}
                 },
-                "inputData" : {
+                "inputDataItems" : {
                     "description" : "List of DataFile ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "outputData" : {
+                "inputDataSets" : {
+                    "description" : "List of DataSet ids",
+                    "type" : "array",
+                    "minimum" : 0,
+                    "items" : {"type" : "string"}
+                },
+                "outputDataItems" : {
                     "description" : "List of DataFile ids",
+                    "type" : "array",
+                    "minimum" : 0,
+                    "items" : {"type" : "string"}
+                },
+                "outputDataSets" : {
+                    "description" : "List of DataSet ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
                 "params" : {
+                    # Becoming part of notes
                     "description" : "List of parameters"
                     "type" : "array",
                     "minimum" : 0,
@@ -466,6 +476,10 @@ class DataFile(object):
                     "description" : "Is it private or public",
                     # Are there other access types?
                     "enum" : ["private", "public"]
+                },
+                "creator" : {
+                    "description" : "The process that created this",
+                    "type" : "string"
                 },
                 "checksum" : {
                     "description" : "file checksum",
