@@ -9,3 +9,4 @@
 *** TODO Add type field to notes
 *** TODO Add multiple key/value pairs to notes
 *** TODO DataFile disappears and turns into DataItem. Can either be a file or set of key/value pairs.
+*** TODO Some objects have 'owner', some 'user', and some 'created_by'?

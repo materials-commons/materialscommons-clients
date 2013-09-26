@@ -12,11 +12,11 @@ class User(object):
                     "description" : "User apikey for webservice calls",
                     "type" : "string"
                 },   
-                "createdOn" : {"type" : "date-time"},
-                "lastModified" : {"type" : "date-time"},
+                "created_on" : {"type" : "date-time"},
+                "last_modified" : {"type" : "date-time"},
                 "email" : {"type" : "email"},
                 "fullname" : {"type" : "string"},
-                "passwordHash" : {
+                "password_hash" : {
                     "description" : "Hash of users password",
                     "type" : "string"
                 }, 
@@ -55,15 +55,17 @@ class Note(object):
             "type" : "object",
             "properties": {
                 "id" : {"type" : "string"},
-                "createdBy" : {
+                "created_by" : {
                     "description" : "Id of user who created note",
                     "type" : "string"
                 },
-                "createdOn" : { "type" : "date-time"},
+                "created_on" : { "type" : "date-time"},
+                "key" : { "type" : "string"},
                 "note" : {
                     "description" : "The text for the entry",
                     "type" : "string"
-                }
+                },
+                "units" : {"type" : "string"}
             }
         }
         return _schema
@@ -80,13 +82,13 @@ class Project(object):
                 "id" : {"type" : "string"},
                 "name" : {"type" : "string"},
                 "description" : { "type" : "string"},
-                "dataDir" : {
+                "datadir" : {
                     "description" : "id of root dataDir",
                     "type" : "string"
                 },
                 "owner" : {"type" : "string"},
-                "createdOn" : {"type" : "date-time"},
-                "lastModified" : {"type" : "date-time"},
+                "created_on" : {"type" : "date-time"},
+                "last_modified" : {"type" : "date-time"},
                 "notes" : {
                     "description" : "List of Notes objects",
                     "type" : "array",
@@ -227,8 +229,8 @@ class UserGroup(object):
             "type" : "object",
             "properties" : {
                 "id" : {"type" : "string"},
-                "creatdOn" : {"type" : "date-time"},
-                "lastModified" : {"type" : "date-time"},
+                "created_on" : {"type" : "date-time"},
+                "last_modified" : {"type" : "date-time"},
                 "owner" : {
                     "description" : "The Id for the user who created the group",
                     "type" : "string"
@@ -258,7 +260,9 @@ class Process(object):
                     "description" : "Name given by user",
                     "type" : "string"
                 },
-                "createdBy" : {
+                "created_on" : {"type" : "date-time"},
+                "last_modified" : {"type" : "date-time"},
+                "created_by" : {
                     "description" : "The id of user who created the process",
                     "type" : "string"
                 },
@@ -266,7 +270,7 @@ class Process(object):
                     "description" : "id of machine process was performed on",
                     "type" : "string"
                 },
-                "processType" : {
+                "process_type" : {
                     "description" : "Type of process, eg 'VASP', 'GCMC', etc...",
                     "type" : "string"
                 },
@@ -277,78 +281,77 @@ class Process(object):
                     "minimum" : 0,
                     "items": {"type" : "object"}
                 },
-                "inputDataItems" : {
-                    "description" : "List of DataFile ids",
+                "input_dataitems" : {
+                    "description" : "List of DataItem ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "inputDataSets" : {
+                "input_datasets" : {
                     "description" : "List of DataSet ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "outputDataItems" : {
-                    "description" : "List of DataFile ids",
+                "output_dataitems" : {
+                    "description" : "List of DataItem ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "outputDataSets" : {
+                "output_datasets" : {
                     "description" : "List of DataSet ids",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "params" : {
-                    # Becoming part of notes
-                    "description" : "List of parameters"
-                    "type" : "array",
-                    "minimum" : 0,
-                    "items" : {"type" : "string"}
-                },
-                "errorMessages" : {
-                    # How to relate a series of messages with a started run?
-                    "description" : "List of error messages",
-                    "type" : "array",
-                    "minimum" : 0,
-                    "items" : {"type" : "string"}
-                },
-                "startStopTimes" : {
-                    "description" : "List of StartStop objects",
+                "runs" : {
+                    "description" : "List of Run objects",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "object"}
                 },
                 "citations" : {
                     # What to do with this - separate into an object?
-                    "description" : "List of citations",
+                    "description" : "List of Citation objects",
                     "type" : "array",
                     "minimum" : 0,
-                    "items" : {"type" : "string"}                    
+                    "items" : {"type" : "object"}                    
                 },
                 "status" : {"enum" : ["aborted", "successful", "running", "cancelled", "queued"]}
+                
+                # For prov, also want:
+                #   created_by_name, 
+                #   machine_name, 
+                #   input_dataitem_names, 
+                #   input_dataset_names, 
+                #   output_dataitem_names, 
+                #   output_dataset_names
             }
         }
         return _schema
 
-class StartStop(object):
+class Run(object):
     def __init__(self):
         pass
 
     def schema():
         _schema = {
-            "description" : "",
+            "description" : "Start time, stop time, and error messages associated with one run of a Process.",
             "type" : "object",
             "properties" : {
                 "started" : {"type" : "date-time"},
                 "stopped" : {"type" : "date-time"}
+                "error_messages" : {
+                    "type" : "array",
+                    "minimum" : 0,
+                    "items" : {"type" : "string"}
+                }
             }
         }
         return _schema
 
-class DataParams(object):
+class Citation(object):
     def __init__(self):
         pass
 
@@ -357,14 +360,12 @@ class DataParams(object):
             "description" : "",
             "type" : "object",
             "properties" : {
-                "id" : {"type" : "string"},
-                "params" : {
-                    "description" : "key/value pairs",
-                    "type" : "object",
-                }
+                # what should go here? BibTex string? or BibTex data items?
+                "text" : {"type" : "string"}
             }
         }
         return _schema
+
 
 class DataDir(object):
     def __init__(self):
@@ -376,20 +377,26 @@ class DataDir(object):
             "type" : "object",
             "properties" : {
                 "id" : {"type" : "string"},
+                "name" : {"type" : "string"},
+                "owner" : {
+                    "description" : "Id of user who owns this object",
+                    "type" : "string"
+                },
                 "access" : {
                     "description" : "Is it private or public",
                     # Are there other access types?
                     "enum" : ["private", "public"]
                 },
-                "dataFiles" : {
-                    "description" : "List of DataFile Ids",
+                "dataitems" : {
+                    "description" : "List of DataItem Ids",
                     "type" : "string"
                 },
-                "createdOn" : {"type" : "date-time"},
-                "lastModified" : {"type" : "date-time"},
-                "markedForReview" : {"type" : "boolean"},
-                "myTags" : {
-                    "description" : "List of ids for tags user privately created",
+                "created_on" : {"type" : "date-time"},
+                "last_modified" : {"type" : "date-time"},
+                "marked_for_review" : {"type" : "boolean"},
+                "my_tags" : {
+                    # must be filtered for a particular user
+                    "description" : "List of ids for tags users privately create",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
@@ -400,12 +407,7 @@ class DataDir(object):
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "name" : {"type" : "string"},
-                "owner" : {
-                    "description" : "Id of user who owns this object",
-                    "type" : "string"
-                },
-                "parentDataDir" : {
+                "parent_datadir" : {
                     "description" : "parent data dir id",
                     "type" : "string"
                 },
@@ -446,15 +448,15 @@ class Review(object):
                     # Are there other types?
                     "enum" : ["datafile", "datadir", "project"]
                 },
-                "itemName" : {
+                "item_name" : {
                     "description" : "Name of item the review is for",
                     "type" : "string"
                 },
-                "itemId" : {
+                "item_id" : {
                     "description" : "Id of item to review",
                     "type" : "string"
                 },
-                "markedOn" : {
+                "marked_on" : {
                     "description" : "Date item was marked for review",
                     "type" : "date-time"
                 }
@@ -462,41 +464,77 @@ class Review(object):
         }
         return _schema
 
-class DataFile(object):
+class DataItem(object):
     def __init__(self):
         pass
 
     def schema():
         _schema = {
-            "description" : "",
+            "description" : "A data file and/or parameters",
             "type" : "object",
             "properties" : {
+                
+                ## Static items -----------------------------------------------
+                ##   These must not change after creating the DataItem
+                ##   Provenance is unchanging, trustworthy
+                ##   The file this points at should not change, though it's location might
+                
                 "id" : {"type" : "string"},
-                "access" : {
-                    "description" : "Is it private or public",
-                    # Are there other access types?
-                    "enum" : ["private", "public"]
-                },
-                "creator" : {
-                    "description" : "The process that created this",
-                    "type" : "string"
-                },
                 "checksum" : {
                     "description" : "file checksum",
                     "type" : "string"
                 },
                 "size" : {"type" : "integer"},
-                "dataDirs" : {
+                "created_on" : {"type" : "date-time"}, # is the file or the DataItem object? I assume object?
+                "owner" : {
+                    "description" : "Id of user who owns this object",
+                    "type" : "string"
+                },
+                "machine" : {
+                    "description" : "ID of machine dataitem was created with",
+                    "type" : "string"
+                },
+                "media_type" : {
+                    "description" : "Type of file as determined by Tika",
+                    "type" : "string"
+                },
+                "params" : {
+                    "description" : "List of Notes objects used as parameters",
+                    "type" : "array",
+                    "minimum" : 0,
+                    "items": {"type" : "object"}
+                },
+                
+                
+                ## Mutable items -----------------------------------------------
+                ##   These may change after creating the DataItem
+                ##   Should not use for provenance
+                
+                "name" : {"type" : "string"},
+                "description" : {"type" : "string"},
+                "last_modified" : {"type" : "date-time"}, # is the file or the DataItem object? I assume object? 
+                "location" : {
+                    "description" : "Location on disk, relative to some base",
+                    "type" : "string"
+                },
+                "access" : {
+                    "description" : "Is it private or public",
+                    # Are there other access types?
+                    "enum" : ["private", "public"]
+                },
+                "datadirs" : {
                     "description" : "List of dataDir ids this file can be found in",
                     "type" : "array",
                     "minimum" : 1,
                     "items" : {"type" : "string"}
                 },
-                "createdOn" : {"type" : "date-time"},
-                "lastModified" : {"type" : "date-time"},
-                "markedForReview" : {"type" : "boolean"},
-                "myTags" : {
-                    "description" : "List of ids for tags user privately created",
+                "creator" : {
+                    "description" : "The ID of the Process that created this",
+                    "type" : "string"
+                },
+                "my_tags" : {
+                    # must be filtered for a particular user
+                    "description" : "List of ids for tags users privately create",
                     "type" : "array",
                     "minimum" : 0,
                     "items" : {"type" : "string"}
@@ -507,26 +545,12 @@ class DataFile(object):
                     "minimum" : 0,
                     "items" : {"type" : "string"}
                 },
-                "name" : {"type" : "string"},
-                "owner" : {
-                    "description" : "Id of user who owns this object",
-                    "type" : "string"
-                },
-                "description" : {"type" : "string"},
-                "location" : {
-                    "description" : "Location on disk, relative to some base",
-                    "type" : "string"
-                },
-                "mediaType" : {
-                    "description" : "Type of file as determined by Tika",
-                    "type" : "string"
-                },
-                "metaTags" : {
+                "meta_tags" : {
                     "description" : "Dictionary of key/value pairs 'name'/'value'",
                     "type" : "array",
                     "items" : {"type" : "object"}
                 },
-                "name" : {"type" : "string"},
+                "marked_for_review" : {"type" : "boolean"},
                 "reviews" : {
                     "description" : "List of review object ids",
                     "type" : "array",
@@ -544,6 +568,14 @@ class DataFile(object):
                     # We may not need to store this
                     "type" : "string"
                 }
+                
+                # For prov, also want:
+                #   owner_name, 
+                #   machine_name, 
+                #   input_dataitem_names, 
+                #   input_dataset_names, 
+                #   output_dataitem_names, 
+                #   output_dataset_names
             }
         }
         return _schema
@@ -557,37 +589,42 @@ class DataSet(object):
             "description" : "",
             "type" : "object",
             "properties" : {
+                
+                ## Static items -----------------------------------------------
+                ##   These must not change after creating the DataSet
+                ##   Provenance is unchanging, trustworthy
+                ##   The file this points at should not change, though it's location might
+                
                 "id" : {"type" : "string"},
                 "name": {"type" : "string"},
+                "created_on" : {"type" : "date-time"},
+                "dataitems" : {
+                    "description" : "List of DataFile ids",
+                    "type" : "array",
+                    "minimum" : 0,
+                    "items" : {"type" : "string"}
+                },
                 "owner" : {
                     "description" : "User id who created this DataSet"
                     "type" : "string"
                 },
+                
+                
+                ## Mutable items -----------------------------------------------
+                ##   These may change after creating the DataItem
+                ##   Should not use for provenance
+                
                 "notes" : {
                     "description" : "List of Notes objects",
                     "type" : "array",
                     "minimum" : 0,
                     "items": {"type" : "object"}
-                },
-                "inputData" : {
-                    "description" : "List of DataFile ids",
-                    "type" : "array",
-                    "minimum" : 0,
-                    "items" : {"type" : "string"}
-                },
-                "outputData" : {
-                    "description" : "List of DataFile ids",
-                    "type" : "array",
-                    "minimum" : 0,
-                    "items" : {"type" : "string"}
-                },
-                "params" : {
-                    "description" : "List of parameters"
-                    "type" : "array",
-                    "minimum" : 0,
-                    "items" : {"type" : "string"}
-                },
-                "createdOn" : {"type" : "date-time"}
+                }
+                
+                # For prov, also want:
+                #   dataitem_names, 
+                #   owner_name
+                
             }
         }
         return _schema
@@ -625,7 +662,7 @@ class UDJob(object):
                     "description" : "Type of job",
                     "enum" : ["upload", "download"]
                 },
-                "createdBy" : {
+                "created_by" : {
                     "description" : "User id who created",
                     "type" : "string"
                 },
@@ -641,8 +678,8 @@ class UDJob(object):
                     "enum" : ["TBD"]
                 },
                 "note" : {"type" : "string"},
-                "submittedOn" : {"type" : "date-time"},
-                "dataDir" : {
+                "submitted_on" : {"type" : "date-time"},
+                "datadir" : {
                     "description" : "DataDir Id to upload to/download from"
                     "type" : "string"
                 }
