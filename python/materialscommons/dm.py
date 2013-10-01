@@ -490,12 +490,12 @@ class DataItem(object):
             "description" : "A data file and/or parameters",
             "type" : "object",
             "properties" : {
-                
+
                 ## Static items -----------------------------------------------
                 ##   These must not change after creating the DataItem
                 ##   Provenance is unchanging, trustworthy
                 ##   The file this points at should not change, though it's location might
-                
+
                 "id" : {"type" : "string"},
                 "checksum" : {
                     "description" : "file checksum",
@@ -521,12 +521,11 @@ class DataItem(object):
                     "minimum" : 0,
                     "items": {"type" : "object"}
                 },
-                
-                
+
                 ## Mutable items -----------------------------------------------
                 ##   These may change after creating the DataItem
                 ##   Should not use for provenance
-                
+
                 "name" : {"type" : "string"},
                 "description" : {"type" : "string"},
                 "last_modified" : {"type" : "date-time"}, # is the file or the DataItem object? I assume object? 
@@ -585,7 +584,7 @@ class DataItem(object):
                     # We may not need to store this
                     "type" : "string"
                 }
-                
+
                 # For prov, also want:
                 #   owner_name, 
                 #   machine_name, 
@@ -606,12 +605,12 @@ class DataSet(object):
             "description" : "",
             "type" : "object",
             "properties" : {
-                
+
                 ## Static items -----------------------------------------------
                 ##   These must not change after creating the DataSet
                 ##   Provenance is unchanging, trustworthy
                 ##   The file this points at should not change, though it's location might
-                
+
                 "id" : {"type" : "string"},
                 "name": {"type" : "string"},
                 "created_on" : {"type" : "date-time"},
@@ -625,23 +624,21 @@ class DataSet(object):
                     "description" : "User id who created this DataSet"
                     "type" : "string"
                 },
-                
-                
+
                 ## Mutable items -----------------------------------------------
                 ##   These may change after creating the DataItem
                 ##   Should not use for provenance
-                
+
                 "notes" : {
                     "description" : "List of Notes objects",
                     "type" : "array",
                     "minimum" : 0,
                     "items": {"type" : "object"}
                 }
-                
+
                 # For prov, also want:
                 #   dataitem_names, 
                 #   owner_name
-                
             }
         }
         return _schema
